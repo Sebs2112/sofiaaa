@@ -6,10 +6,13 @@ exports.test = function (req, res) {
 };
 
 exports.create_user = function (req, res) {
+    console.log("Hi")
+    console.log(req.params)
+    console.log(req.body)
     var user = new User(
         {
             name: req.body.name,
-            price: req.body.email
+            email: req.body.email
         }
     );
 
