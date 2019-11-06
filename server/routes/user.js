@@ -8,6 +8,8 @@ var user_controller = require('../controllers/user');
 // a simple test url to check that all of our files are communicating correctly.
 router.get('/get', user_controller.test);
 
+router.get('/getAll', user_controller.getAll)
+
 
 router.post('/createUser', user_controller.create_user);
 
