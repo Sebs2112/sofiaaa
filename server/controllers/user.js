@@ -7,13 +7,13 @@ exports.test = function (req, res) {
 
 exports.getAll = function(req, res) {
     User.find({}, function(err, users) {
-      var userMap = {};
+    //   var userMap = {};
   
-      users.forEach(function(user) {
-        userMap[user._id] = user;
-      });
+    //   users.forEach(function(user) {
+    //     userMap[user._id] = user;
+    //   });
   
-      res.send(userMap);  
+      res.send(users);  
     });
   };
 
