@@ -1,6 +1,7 @@
 var initialState = {
     category: [],
-    selectedCategory: []
+    selectedCategory: [],
+    selectedSubCategory: []
 }
 
 export default (state = initialState, action) => {
@@ -14,6 +15,9 @@ export default (state = initialState, action) => {
     case 'SELECTED_CATEGORY_CHANGED':
         return {...state, selectedCategory:action.selectedCategory}
 
+    case 'SELECTED_SUBCATEGORY_CHANGED':
+        return {...state, selectedSubCategory:action.selectedSubCategory}
+  
     default:
       return state;
     }

@@ -12,6 +12,14 @@ export function selectedCategoryChanged(category){
     }
 }
 
+export function selectedSubCategoryChanged(subcategory){
+    return{
+        type:'SELECTED_SUBCATEGORY_CHANGED',
+        selectedSubCategory:subcategory
+    }
+}
+
+
 
 
 export function getAllCategories(){
