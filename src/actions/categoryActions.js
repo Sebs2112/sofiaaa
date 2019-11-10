@@ -19,8 +19,18 @@ export function selectedSubCategoryChanged(subcategory){
     }
 }
 
-
-
+export function addSkillChosen(skill){
+	return{
+		type:'ADD_SKILL',
+		skill:skill
+	}
+}
+export function removeSkillChosen(skill){
+	return{
+		type:'REMOVE_SKILL',
+		skill:skill
+	}
+}
 
 export function getAllCategories(){
 	return dispatch => {

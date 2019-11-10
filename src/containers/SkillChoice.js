@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { getAllCategories, selectedCategoryChanged, selectedSubCategoryChanged } from '../actions/categoryActions'
+import { getAllCategories, selectedCategoryChanged, selectedSubCategoryChanged, addSkillChosen, removeSkillChosen } from '../actions/categoryActions'
 
 
 
@@ -11,20 +11,26 @@ class SkillChoice extends Component {
 
     
       async componentDidMount() {
-        this.props.dispatch(getAllCategories());
-
-       
-      }
+        this.props.dispatch(getAllCategories());}
 
 
       handleCategorySelection(cat){
         this.props.dispatch(selectedCategoryChanged(cat))
-        
-      }
+        this.props.dispatch(selectedSubCategoryChanged([]))
+    }
 
       handleSubCategorySelection(subcat){
           this.props.dispatch(selectedSubCategoryChanged(subcat))
-      }
+        }
+
+        handleSkillSelection(skill){
+            if(this.props.skillsChosen && !this.props.skillsChosen.includes(skill)){
+                this.props.dispatch(addSkillChosen(skill))
+            }
+        }
+        handleSkillRemove(skill){
+            this.props.dispatch(removeSkillChosen(skill))
+        }
 
       render() {
           
@@ -39,11 +45,14 @@ class SkillChoice extends Component {
           }) : <span className ="dropdown-item-text">Choose a category</span>
           
           const listOfSkills = this.props.selectedSubCategory.cat ? this.props.selectedSubCategory.cat.skills.map((skill,i) =>{
-              return <li className="list-group-item">{skill.skill}</li>
+              return <li className="list-group-item" onClick={() =>  this.handleSkillSelection(skill.skill)}>{skill.skill}</li>
           }) : <li className="list-group-item">No skills currently </li>
           
-        console.log(this.props.selectedSubCategory)
-
+          console.log(this.props.skillsChosen ? this.props.skillsChosen: "No")
+        const listOfChosenSkills = this.props.skillsChosen ? this.props.skillsChosen.map((skill, i) => {
+            return <li className="list-group-item" onClick={() =>  this.handleSkillRemove(skill)}>{skill}</li>
+        })  : <li className="list-group-item">No skills currently </li>
+        
         
         return (
            
@@ -54,7 +63,7 @@ class SkillChoice extends Component {
                     <div className="column-sm-4">
                         <div className="dropdown">
                             <button type="button" className="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                Category Select
+                                {this.props.selectedCategory.cat ? this.props.selectedCategory.cat.categoryName : "Category Select"}
                             </button>
                             <div className="dropdown-menu">
                                 {dropDownCategories}
@@ -64,7 +73,7 @@ class SkillChoice extends Component {
                     <div className="column 4">
                         <div className="dropdown">
                             <button type="button" className="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                Sub-Category Select 
+                                {this.props.selectedSubCategory.cat ? this.props.selectedSubCategory.cat.subCategoryName : "SubCategory Select"}
                             </button>
                             <div className="dropdown-menu">
                                 {dropDownSubCategories}
@@ -73,9 +82,16 @@ class SkillChoice extends Component {
                     </div>
                 </div>
                 <div className ="row">
+                    <div className ="col-4"> 
                     <ul class="list-group">
                         {listOfSkills}
                     </ul>
+                    </div>
+                    <div className ="col-4"> 
+                    <ul class="list-group">
+                        {listOfChosenSkills}
+                    </ul>
+                    </div>
                 </div>
             </div>
           
@@ -90,6 +106,7 @@ class SkillChoice extends Component {
             category: state.category.category,
             selectedCategory: state.category.selectedCategory,
             selectedSubCategory: state.category.selectedSubCategory,
+            skillsChosen: state.category.skillsChosen
             
         }
     }
