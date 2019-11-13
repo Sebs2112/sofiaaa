@@ -1,114 +1,174 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux'
-import { getAllCategories, selectedCategoryChanged, selectedSubCategoryChanged, addSkillChosen, removeSkillChosen } from '../actions/categoryActions'
+import React, { Component, useEffect, useState } from "react";
+import { connect } from "react-redux";
+import CatDropdown from "../presenters/CatDropdown";
+import {
+  getAllCategories,
+  selectedCategoryChanged,
+  selectedSubCategoryChanged,
+  addSkillChosen,
+  removeSkillChosen
+} from "../actions/categoryActions";
 
-
-
-
-
-class SkillChoice extends Component {
-
-
-    
-      async componentDidMount() {
-        this.props.dispatch(getAllCategories());}
-
-
-      handleCategorySelection(cat){
-        this.props.dispatch(selectedCategoryChanged(cat))
-        this.props.dispatch(selectedSubCategoryChanged([]))
+function SkillChoice({
+  category,
+  selectedCategory,
+  selectedSubCategory,
+  skillsChosen,
+  getAllCategories,
+  selectedCategoryChanged,
+  selectedSubCategoryChanged,
+  addSkillChosen,
+  removeSkillChosen,
+  ...props
+}) {
+  // In a function there is no component did mount, so this method is called if category is equal to zero, therefore at the start
+  useEffect(() => {
+    if (category.length === 0) {
+      getAllCategories();
     }
+  });
 
-      handleSubCategorySelection(subcat){
-          this.props.dispatch(selectedSubCategoryChanged(subcat))
-        }
+  function handleCategorySelection(cat) {
+    selectedCategoryChanged(cat);
+    selectedSubCategoryChanged([]);
+  }
 
-        handleSkillSelection(skill){
-            if(this.props.skillsChosen && !this.props.skillsChosen.includes(skill)){
-                this.props.dispatch(addSkillChosen(skill))
+  function handleSubCategorySelection(subcat) {
+    selectedSubCategoryChanged(subcat);
+  }
+
+  function handleSkillSelection(skill) {
+    if (skillsChosen && !skillsChosen.includes(skill)) {
+      addSkillChosen(skill);
+    }
+  }
+  function handleSkillRemove(skill) {
+    removeSkillChosen(skill);
+  }
+
+  const dropDownCategories = category.map((cat, i) => {
+    return (
+      <span
+        className="dropdown-item-text"
+        onClick={() => handleCategorySelection({ cat })}
+        key={i}
+        value={cat.categoryName}
+      >
+        {cat.categoryName}
+      </span>
+    );
+  });
+
+  const dropDownSubCategories = selectedCategory.cat ? (
+    selectedCategory.cat.subCategories.map((cat, i) => {
+      return (
+        <span
+          className="dropdown-item-text"
+          onClick={() => handleSubCategorySelection({ cat })}
+          key={i}
+          value={cat.subCategoryName}
+        >
+          {cat.subCategoryName}
+        </span>
+      );
+    })
+  ) : (
+    <span className="dropdown-item-text">Choose a category</span>
+  );
+
+  const listOfSkills = selectedSubCategory.cat ? (
+    selectedSubCategory.cat.skills.map((skill, i) => {
+      return (
+        <li
+          className="list-group-item"
+          onClick={() => handleSkillSelection(skill.skill)}
+        >
+          {skill.skill}
+        </li>
+      );
+    })
+  ) : (
+    <li className="list-group-item">No skills currently </li>
+  );
+
+  console.log(skillsChosen ? skillsChosen : "No");
+  const listOfChosenSkills = skillsChosen ? (
+    skillsChosen.map((skill, i) => {
+      return (
+        <li
+          className="list-group-item sm"
+          onClick={() => handleSkillRemove(skill)}
+        >
+          {skill}
+        </li>
+      );
+    })
+  ) : (
+    <li className="list-group-item">No skills currently </li>
+  );
+  console.log(selectedSubCategory.cat);
+  return (
+    <div className="container">
+      <div className="row">
+        <div className="column-sm-4">
+          <CatDropdown
+            cats={category}
+            onClickCat={handleCategorySelection}
+            selectedCategory={selectedCategory}
+          ></CatDropdown>
+        </div>
+        <div className="column 4">
+          <CatDropdown
+            cats={
+              selectedCategory.cat ? selectedCategory.cat.subCategories : []
             }
-        }
-        handleSkillRemove(skill){
-            this.props.dispatch(removeSkillChosen(skill))
-        }
+            onClickCat={handleSubCategorySelection}
+            selectedCategory={selectedSubCategory}
+          ></CatDropdown>
+        </div>
+      </div>
+      <div className="row">
+        <div
+          className="col-4"
+          style={{
+            backgroundColor: "#41669d",
+            height: "70vh",
+            overflowY: "scroll"
+          }}
+        >
+          <ul className="list-group">{listOfSkills}</ul>
+        </div>
+        <div className="col-4"></div>
+        <div
+          className="col-4"
+          style={{
+            backgroundColor: "#41669d",
+            height: "70vh",
+            overflowY: "scroll"
+          }}
+        >
+          <ul className="list-group">{listOfChosenSkills}</ul>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-      render() {
-          
-        console.log(this.props.selectedCategory.cat ? this.props.selectedCategory.cat: "No")
-          const dropDownCategories = this.props.category.map((cat,i) => {
-            return <span className ="dropdown-item-text" onClick={() =>  this.handleCategorySelection({cat})} key = {i} value ={cat.categoryName} >{cat.categoryName}</span>
-          }
-          )
+const mapDispatchToProps = {
+  getAllCategories,
+  selectedCategoryChanged,
+  selectedSubCategoryChanged,
+  addSkillChosen,
+  removeSkillChosen
+};
 
-          const dropDownSubCategories = this.props.selectedCategory.cat ? this.props.selectedCategory.cat.subCategories.map((cat,i) => {
-            return <span className ="dropdown-item-text" onClick={() =>  this.handleSubCategorySelection({cat})}  key = {i} value ={cat.subCategoryName} >{cat.subCategoryName}</span>
-          }) : <span className ="dropdown-item-text">Choose a category</span>
-          
-          const listOfSkills = this.props.selectedSubCategory.cat ? this.props.selectedSubCategory.cat.skills.map((skill,i) =>{
-              return <li className="list-group-item" onClick={() =>  this.handleSkillSelection(skill.skill)}>{skill.skill}</li>
-          }) : <li className="list-group-item">No skills currently </li>
-          
-          console.log(this.props.skillsChosen ? this.props.skillsChosen: "No")
-        const listOfChosenSkills = this.props.skillsChosen ? this.props.skillsChosen.map((skill, i) => {
-            return <li className="list-group-item" onClick={() =>  this.handleSkillRemove(skill)}>{skill}</li>
-        })  : <li className="list-group-item">No skills currently </li>
-        
-        
-        return (
-           
-                
-            <div className="container">
-         
-                <div className="row">
-                    <div className="column-sm-4">
-                        <div className="dropdown">
-                            <button type="button" className="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                {this.props.selectedCategory.cat ? this.props.selectedCategory.cat.categoryName : "Category Select"}
-                            </button>
-                            <div className="dropdown-menu">
-                                {dropDownCategories}
-                            </div>
-                        </div>
-                    </div>
-                    <div className="column 4">
-                        <div className="dropdown">
-                            <button type="button" className="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                {this.props.selectedSubCategory.cat ? this.props.selectedSubCategory.cat.subCategoryName : "SubCategory Select"}
-                            </button>
-                            <div className="dropdown-menu">
-                                {dropDownSubCategories}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className ="row">
-                    <div className ="col-4"> 
-                    <ul class="list-group">
-                        {listOfSkills}
-                    </ul>
-                    </div>
-                    <div className ="col-4"> 
-                    <ul class="list-group">
-                        {listOfChosenSkills}
-                    </ul>
-                    </div>
-                </div>
-            </div>
-          
-            
-        )
-      }
-    }
+const mapStateToProps = state => {
+  return {
+    category: state.category.category,
+    selectedCategory: state.category.selectedCategory,
+    selectedSubCategory: state.category.selectedSubCategory,
+    skillsChosen: state.category.skillsChosen
+  };
+};
 
-
-    const mapStateToProps = state => {
-        return {
-            category: state.category.category,
-            selectedCategory: state.category.selectedCategory,
-            selectedSubCategory: state.category.selectedSubCategory,
-            skillsChosen: state.category.skillsChosen
-            
-        }
-    }
-    
-    export default connect(mapStateToProps)(SkillChoice);
+export default connect(mapStateToProps, mapDispatchToProps)(SkillChoice);
