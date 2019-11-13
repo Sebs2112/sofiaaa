@@ -46,35 +46,6 @@ function SkillChoice({
     removeSkillChosen(skill);
   }
 
-  const dropDownCategories = category.map((cat, i) => {
-    return (
-      <span
-        className="dropdown-item-text"
-        onClick={() => handleCategorySelection({ cat })}
-        key={i}
-        value={cat.categoryName}
-      >
-        {cat.categoryName}
-      </span>
-    );
-  });
-
-  const dropDownSubCategories = selectedCategory.cat ? (
-    selectedCategory.cat.subCategories.map((cat, i) => {
-      return (
-        <span
-          className="dropdown-item-text"
-          onClick={() => handleSubCategorySelection({ cat })}
-          key={i}
-          value={cat.subCategoryName}
-        >
-          {cat.subCategoryName}
-        </span>
-      );
-    })
-  ) : (
-    <span className="dropdown-item-text">Choose a category</span>
-  );
 
   const listOfSkills = selectedSubCategory.cat ? (
     selectedSubCategory.cat.skills.map((skill, i) => {
@@ -91,7 +62,6 @@ function SkillChoice({
     <li className="list-group-item">No skills currently </li>
   );
 
-  console.log(skillsChosen ? skillsChosen : "No");
   const listOfChosenSkills = skillsChosen ? (
     skillsChosen.map((skill, i) => {
       return (
@@ -106,12 +76,13 @@ function SkillChoice({
   ) : (
     <li className="list-group-item">No skills currently </li>
   );
-  console.log(selectedSubCategory.cat);
+
   return (
     <div className="container">
       <div className="row">
         <div className="column-sm-4">
           <CatDropdown
+            type= "cat"
             cats={category}
             onClickCat={handleCategorySelection}
             selectedCategory={selectedCategory}
@@ -119,6 +90,7 @@ function SkillChoice({
         </div>
         <div className="column 4">
           <CatDropdown
+            type= "subcat"
             cats={
               selectedCategory.cat ? selectedCategory.cat.subCategories : []
             }
