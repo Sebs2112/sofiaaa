@@ -10,8 +10,9 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import userReducer from './reducers/userReducer';
 import categoryReducer from './reducers/categoryReducer';
+import skillReducer from './reducers/skillReducer';
 
-const store = createStore(combineReducers({user: userReducer, category: categoryReducer}),  applyMiddleware(
+const store = createStore(combineReducers({user: userReducer, category: categoryReducer,skills:skillReducer}),  applyMiddleware(
     thunk
   ));
 

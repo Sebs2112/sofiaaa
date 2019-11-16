@@ -1,8 +1,8 @@
-var skill = require('../models/skill');
+var Skill = require('../models/skill');
 
 
 exports.getAll = function(req, res) {
-    skill.find({}, function(err, skills) {
+    Skill.find({}, function(err, skills) {
     //   var skillMap = {};
   
     //   skills.forEach(function(skill) {
@@ -15,9 +15,10 @@ exports.getAll = function(req, res) {
 
 exports.create_skill = function (req, res) {
     console.log(req.body)
-    var skill = new skill(
+    var skill = new Skill(
         {
             skillName: req.body.skillName,
+            description: req.body.description,
             skillLevels: req.body.skillLevels
         }
     );
@@ -33,21 +34,21 @@ exports.create_skill = function (req, res) {
 
 
 exports.get_skill = function (req, res) {
-    skill.findById(req.params.id, function (err, skill) {
+    Skill.findById(req.params.id, function (err, skill) {
         if (err) return next(err);
         res.send(skill);
     })
 };
 
 exports.update_skill = function (req, res) {
-    skill.findByIdAndUpdate(req.params.id, {$set: req.body}, function (err, skill) {
+    Skill.findByIdAndUpdate(req.params.id, {$set: req.body}, function (err, skill) {
         if (err) return next(err);
         res.send('skill Updated.');
     });
 };
 
 exports.delete_skill = function (req, res) {
-    skill.findByIdAndRemove(req.params.id, function (err) {
+    Skill.findByIdAndRemove(req.params.id, function (err) {
         if (err) return next(err);
         res.send('skill Deleted');
     })

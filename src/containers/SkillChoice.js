@@ -9,14 +9,18 @@ import {
   removeSkillChosen
 } from "../actions/categoryActions";
 
+import { getAllSkills, selectedSkillChanged } from "../actions/skillActions";
+
 function SkillChoice({
   category,
   selectedCategory,
   selectedSubCategory,
   skillsChosen,
   getAllCategories,
+  getAllSkills,
   selectedCategoryChanged,
   selectedSubCategoryChanged,
+  selectedSkillChanged,
   addSkillChosen,
   removeSkillChosen,
   ...props
@@ -25,6 +29,7 @@ function SkillChoice({
   useEffect(() => {
     if (category.length === 0) {
       getAllCategories();
+      getAllSkills();
     }
   });
 
@@ -38,6 +43,10 @@ function SkillChoice({
   }
 
   function handleSkillSelection(skill) {
+    selectedSkillChanged(skill);
+  }
+
+  function handleSkillSelection(skill) {
     if (skillsChosen && !skillsChosen.includes(skill)) {
       addSkillChosen(skill);
     }
@@ -45,7 +54,6 @@ function SkillChoice({
   function handleSkillRemove(skill) {
     removeSkillChosen(skill);
   }
-
 
   const listOfSkills = selectedSubCategory.cat ? (
     selectedSubCategory.cat.skills.map((skill, i) => {
@@ -82,7 +90,7 @@ function SkillChoice({
       <div className="row">
         <div className="column-sm-4">
           <CatDropdown
-            type= "cat"
+            type="cat"
             cats={category}
             onClickCat={handleCategorySelection}
             selectedCategory={selectedCategory}
@@ -90,7 +98,7 @@ function SkillChoice({
         </div>
         <div className="column 4">
           <CatDropdown
-            type= "subcat"
+            type="subcat"
             cats={
               selectedCategory.cat ? selectedCategory.cat.subCategories : []
             }
@@ -110,7 +118,16 @@ function SkillChoice({
         >
           <ul className="list-group">{listOfSkills}</ul>
         </div>
-        <div className="col-4"></div>
+        <div
+          className="col-4"
+          style={{
+            backgroundColor: "#41669d",
+            height: "70vh",
+            overflowY: "scroll"
+          }}
+        >
+          <ul className="list-group">{}</ul>
+        </div>
         <div
           className="col-4"
           style={{
@@ -131,7 +148,9 @@ const mapDispatchToProps = {
   selectedCategoryChanged,
   selectedSubCategoryChanged,
   addSkillChosen,
-  removeSkillChosen
+  removeSkillChosen,
+  getAllSkills,
+  selectedSkillChanged
 };
 
 const mapStateToProps = state => {
@@ -139,7 +158,9 @@ const mapStateToProps = state => {
     category: state.category.category,
     selectedCategory: state.category.selectedCategory,
     selectedSubCategory: state.category.selectedSubCategory,
-    skillsChosen: state.category.skillsChosen
+    skillsChosen: state.category.skillsChosen,
+    skills: state.skills.skills,
+    skillChosen: state.skills.skillChosen
   };
 };
 

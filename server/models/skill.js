@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 var SkillSchema = new Schema({
     skillName: {type: String, required: true, max: 20},
+    description: {type: String, required: true},
     skillLevels: [
         {
         level: {type: Number},
