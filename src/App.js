@@ -3,10 +3,12 @@ import logo from './logo.svg';
 import './App.css';
 import UserList from './containers/UserList';
 import SkillChoice from './containers/SkillChoice';
+import SfiaFrame from './containers/SfiaFrame';
+
 function App() {
   return (
     <div className="App">
-      <SkillChoice/>
+      <SfiaFrame/>
     </div>
   );
 }

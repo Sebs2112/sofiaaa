@@ -109,8 +109,7 @@ function SkillChoice({
     )} ) : (
       <li className="list-group-item">No skills currently </li>
     )
-    
-  console.log(listOfSkillLevels)
+
 
   const selectSkillButton = selectedSkill.length > 0 ? <button onClick={() => handleSkillSelection(selectedSkill[0].skillName)}>Select {selectedSkill[0].skillName}</button> : <p></p>
 
