@@ -7,6 +7,7 @@ function skillsRecieved(skill){
 
 
 export function selectedSkillChanged(skill){
+    console.log("acton")
     return{
         type:'SELECTED_SKILL_CHANGED',
         selectedSkill:skill

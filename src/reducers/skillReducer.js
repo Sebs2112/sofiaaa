@@ -9,6 +9,7 @@ export default (state = initialState, action) => {
       return { ...state, skills: action.skills };
     
     case 'SELECTED_SKILL_CHANGED':
+        console.log("reducer")
         return {...state, selectedSkill:action.selectedSkill}
   
     default:

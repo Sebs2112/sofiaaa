@@ -13,6 +13,8 @@ import { getAllSkills, selectedSkillChanged } from "../actions/skillActions";
 
 function SkillChoice({
   category,
+  skills,
+  selectedSkill,
   selectedCategory,
   selectedSubCategory,
   skillsChosen,
@@ -43,13 +45,20 @@ function SkillChoice({
   }
 
   function handleSkillSelection(skill) {
-    selectedSkillChanged(skill);
-  }
-
-  function handleSkillSelection(skill) {
+    
     if (skillsChosen && !skillsChosen.includes(skill)) {
       addSkillChosen(skill);
     }
+  }
+
+  function showSkillSelectionInfo(skill) {
+    console.log(skill)
+    const skillToAdd = skills.filter(s => s.skillName === skill)
+    selectedSkillChanged(skillToAdd)
+    
+    // if (skillsChosen && !skillsChosen.includes(skill)) {
+    //   addSkillChosen(skill);
+    // }
   }
   function handleSkillRemove(skill) {
     removeSkillChosen(skill);
@@ -60,7 +69,7 @@ function SkillChoice({
       return (
         <li
           className="list-group-item"
-          onClick={() => handleSkillSelection(skill.skill)}
+          onClick={() => showSkillSelectionInfo(skill.skill)}
         >
           {skill.skill}
         </li>
@@ -84,6 +93,26 @@ function SkillChoice({
   ) : (
     <li className="list-group-item">No skills currently </li>
   );
+  
+  const listOfSkillLevels = selectedSkill.length > 0 ? selectedSkill[0].skillLevels.map((level, i) => {
+    const concat = level.objectives.reduce((answer, each) => {
+      return answer +  " " + each.objective
+    }, level.level)
+    return(
+      <li
+      className="list-group-item sm" id = {i}
+      
+    >
+      {concat}
+    </li>
+
+    )} ) : (
+      <li className="list-group-item">No skills currently </li>
+    )
+    
+  console.log(listOfSkillLevels)
+
+  const selectSkillButton = selectedSkill.length > 0 ? <button onClick={() => handleSkillSelection(selectedSkill[0].skillName)}>Select {selectedSkill[0].skillName}</button> : <p></p>
 
   return (
     <div className="container">
@@ -126,7 +155,9 @@ function SkillChoice({
             overflowY: "scroll"
           }}
         >
-          <ul className="list-group">{}</ul>
+          <ul className="list-group">{listOfSkillLevels}</ul>
+          {selectSkillButton}
+          
         </div>
         <div
           className="col-4"
@@ -160,7 +191,7 @@ const mapStateToProps = state => {
     selectedSubCategory: state.category.selectedSubCategory,
     skillsChosen: state.category.skillsChosen,
     skills: state.skills.skills,
-    skillChosen: state.skills.skillChosen
+    selectedSkill: state.skills.selectedSkill
   };
 };
 
