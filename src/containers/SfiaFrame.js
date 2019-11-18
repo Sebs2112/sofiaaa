@@ -46,7 +46,7 @@ function SfiaFrame() {
       <NavBar></NavBar>
       <h1>{currentTitle}</h1>
       <div className="container p-0">
-        <ProgressBar></ProgressBar>
+        <ProgressBar progress = {screenNo}></ProgressBar>
       </div>
       {currentPage}
       <div className="row">

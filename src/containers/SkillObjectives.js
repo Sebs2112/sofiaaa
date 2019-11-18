@@ -5,7 +5,7 @@ function SkillObjectives(){
 
 
     return(
-        <div className="container"> Responses</div>
+        <div className="container"> Objectives</div>
     )
 }
 

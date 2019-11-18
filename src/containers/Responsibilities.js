@@ -5,7 +5,7 @@ function Responsibilities(){
 
 
     return(
-        <div className="container"> Responses</div>
+        <div className="container"> Responsibilities</div>
     )
 }
 
