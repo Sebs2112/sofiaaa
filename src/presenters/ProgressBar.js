@@ -2,7 +2,7 @@ import React from "react";
 
 export default function ProgressBar() {
   return (
-    <div class="progress">
+    <div class="progress mb-4 mt-3">
       <div
         class="progress-bar"
         role="progressbar"

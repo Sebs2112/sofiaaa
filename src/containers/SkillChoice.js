@@ -114,7 +114,7 @@ function SkillChoice({
   const selectSkillButton = selectedSkill.length > 0 ? <button onClick={() => handleSkillSelection(selectedSkill[0].skillName)}>Select {selectedSkill[0].skillName}</button> : <p></p>
 
   return (
-    <div className="container">
+    <div className="container border border-success ">
       <div className="row">
         <div className="column-sm-4">
           <CatDropdown
