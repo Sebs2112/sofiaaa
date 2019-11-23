@@ -1,12 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import {
+    getAllResponsibilities
+  } from "../actions/responsibilityActions";
+  
 
+function Responsibilities({responsibilities, getAllResponsibilities, ...props}){
 
-function Responsibilities(){
-
-
+    useEffect(() => {
+        if (responsibilities.length === 0) {
+          getAllResponsibilities();
+        
+        }
+      });
+    
+    console.log(responsibilities)
     return(
         <div className="container"> Responsibilities</div>
     )
 }
 
-export default Responsibilities;
+
+
+const mapDispatchToProps = {
+    getAllResponsibilities
+  };
+  
+  const mapStateToProps = state => {
+    return {
+      responsibilities: state.responsibility.responsibility
+    };
+  };
+
+export default connect(mapStateToProps,mapDispatchToProps)(Responsibilities);

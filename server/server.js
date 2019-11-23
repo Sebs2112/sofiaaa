@@ -8,6 +8,8 @@ dotenv.config();
 var user = require('./routes/user'); // Imports routes for the user
 var category = require('./routes/category'); // Imports routes for the category
 var skill = require('./routes/skill'); // Imports routes for the skill
+var responsibility= require('./routes/responsibility'); // Imports routes for the responsibility
+
 
 
 var bodyParser = require('body-parser')
@@ -23,6 +25,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.use('/user', user);
 app.use('/skill', skill);
 app.use('/category', category);
+app.use('/responsibility', responsibility);
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
